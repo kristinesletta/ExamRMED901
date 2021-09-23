@@ -1,0 +1,39 @@
+---
+title: "Codebook for exam data"
+author: "Turkuler and Julia"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Data source
+
+Source: This data set is from Amrom E. Obstfeld, who de-identified data on
+COVID-19 testing during 2020 at CHOP (Children’s Hospital of Pennsylvania).
+
+This data set contains data concerning testing for SARS-CoV2 via PCR as well as
+associated metadata. The data has been anonymized, time-shifted, and permuted.
+
+> Additionally, the dataset has been transformed so that it is not in the tidy
+> format anymore.
+
+# Codebook
+
+_A data frame with 15524 observations and 17 variables_
+
+ _**variable**_ |  _**position**_  |   _**description**_  |   _**codes**_
+:---------------|:----------------:|:---------------------|:-----------------
+subject | 1 | id number, first name, and last name for each subject; type: character | _n.a._
+test_id | 2 | test that was performed; type: character | levels: _covid, xcvd1_
+clinic_name | 3 | Clinic or ward where the specimen was collected; type: character | 88 levels
+result | 4 | result of test; type: character | levels: _positive, negative, invalid_
+demo_group | 5 | patient group; type: character | levels: _patient, misc_adult, client, other adult, unidentified_
+drive_thru_ind | 6 | Whether the specimen was collected via a drive-thru site; type: numeric | levels: _1: Collected at drive-thru site; 0: Not collected at drive-thru site_
+ct_result | 7 | Cycle at which threshold reached during PCR; type: numeric | range: 14.05-45
+orderset | 8 | Whether an order set was used for test order; numeric | levels: _1: Collected via orderset; 0: Not collected via orderset_
+payor_group | 9 | Payor associated with order; type: character | levels: _commercial, government, unassigned, medical assistance, self pay, charity care, other_
+patient_class | 10 | Disposition of subject at time of collection; type: character | levels: _inpatient, emergency, observation, recurring outpatient, outpatient, not applicable, day surgery, admit after surgery-obs, admit after surgery-ip_
+col_rec_tat | 11 | Time elapsed between collect time and receive time, units = hours; type: numeric | range: 0 - 61370.2
+rec_ver_tat | 12 | Time elapsed between receive time and verification time, units = hours; type: numeric | range: -18.6 - 218.2
+pan_day | 13 | day after start of pandemic; type: numeric | range: 4-107
+age_female | 15 | Age of female subject at time of specimen collection (Anonymized), units = years; type: numeric | _n.a._
+age_male | 16 | Age of male subject at time of specimen collection (Anonymized), units = years; type: numeric | _n.a._

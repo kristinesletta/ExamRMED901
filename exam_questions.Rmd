@@ -1,7 +1,7 @@
 ---
 title: "Exam_questions"
-author: "Your Name Here"
-date: "`r Sys.Date()`"
+author: "Kristine"
+date: "`23.09.2021`"
 output: html_document
 ---
 
@@ -15,18 +15,20 @@ file, which will contain your answers.
 
 1. How do you define a tidy dataset?
 
-    a) columns and rows are named and there is no data missing
+    
     b) each column is a variable, each row is an observation
-    c) each row is a variable, each column is an observation
+  
    
 2. Why is it useful to organize data in such a way?
+
+it dgkjdklghsklfhskldhf
 
 3. Which of the following functions are used to _restructure_ a dataset?
 (this often means making a tidy dataset)
 
-    a) `summarise`, `filter`, `select`
+    
     b) `pivot_wider`, `pivot_longer`, `separate`
-    c) `lm`, `sqrt`, `table`
+    
 
 ## DATA EXPLORATION
 
@@ -34,8 +36,7 @@ file, which will contain your answers.
 explore it, pick values you want, summarize, etc.)
 
     a) `summarise`, `filter`, `select`
-    b) `pivot_wider`, `pivot_longer`, `separate`
-    c) `lm`, `sqrt`, `table`
+  
 
 2. You have a dataset:
 
@@ -52,17 +53,37 @@ flights
 Write a short code that would find:
 
     a) flights that arrived more than two hours late, but didn’t leave late
+```{r}
+Delayedflights<-
+  flights%>%
+  filter(dep_delay<=0 & arr_delay>120)
+Delayedflights
+```
+    
+    
     b) the most delayed flights.
+    
+```{r}
+mostdelayedflights<-
+  flights%>%
+  arrange(desc(dep_delay))
+mostdelayedflights
+  
+```
+    
 
 3. What does this code do?
 
 ```{r q2}
-flights %>%
+flights %>% #this command selects the dataset "flights", and then
 	filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
+  #this command excludes the flights with missing (non available) values from dep_Delay and arr_delay, and then
   group_by(year, month, day) %>% 
-  summarise(
-    avg_delay1 = mean(arr_delay),
-    avg_delay2 = mean(arr_delay[arr_delay > 0])
+  #groups the remaining data by year, month and day, and then
+  summarise( #creates a new data frame
+    avg_delay1 = mean(arr_delay), #calculating the average of arr_delay and assigning the values to the variable avg_delay1
+    avg_delay2 = mean(arr_delay[arr_delay > 0]) #calculating the average of all flights that were actually delayed and assigning it to the variable avg_delay2
+    
   )
 ```
 
@@ -75,32 +96,49 @@ Fill in the blanks in the code below:
 ```{r q3}
 data("mpg")
 
-ggplot(mpg, aes(class)) + geom_...(...)
+ggplot(mpg, aes(class)) + geom_bar()
+#could not create a histogram because the variables on teh x axis are not continous
 ```
+
 
 2. Now, modify the above code to _fill_ the bars with colors according to
 the type of drive train (`drv`).
+
+```{r}
+data("mpg")
+ggplot(mpg, aes(class)) +
+  geom_bar(aes(fill=drv)) 
+  
+  
+
+```
+
 
 3. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
 For each of these chart types, provide one example of data that you could
 visualize with it.
 
+For line chart: geom_line - evolution 
+For box plot: geom_boxplot - distribution of numeric variables 
+For histogram_ geom_histogram - can be used to represent 
+For area chart: geom_area - jjkfsdk
 ## ANALYSIS
 
 1. Modify below code to run linear regression analysis for outcome flipper length with using predictors sex and body mass by using variables from palmerpenguins::penguins dataset
 
 ```{r}
-# install.packages(palmerpenguins) 
-palmerpenguins::penguins %>%
-  lm(flipper_length_mm ~ sex + body_mass_g)
+#install.packages("palmerpenguins") 
+palmerpenguins::penguins %>% 
+  lm(flipper_length_mm ~ sex + body_mass_g, data=.)
+
 ```
 
 2. Briefly explain what below code does by commenting on each line:
 
 ```{r}
-palmerpenguins::penguins %>%
-  filter(year == 2007) %>%
-  aov(bill_depth_mm ~ species, data = .) %>% 
-  broom::tidy()
+palmerpenguins::penguins %>% #it selects the dataset called "penguins" from the packacke called "palmerpenguins"
+  filter(year == 2007) %>% #it extracts only the data from 2007
+  aov(bill_depth_mm ~ species, data = .) %>% #it runs anova analysis comparing differences between bill_depths_mm among species using the data from the previous pipe.
+  broom::tidy() #it takes the tidy function from the broom package which display the results in a table.
 ```
 

@@ -28,11 +28,109 @@ covid_data <-
            sep = "-")
 covid_data
 ```
-Now I try and clean the data more and rename it to track the changes in the environment for a nice overview
-removing duplicates
+Now I try and clean the data more and rename it to track the changes in the environment for a nice overview and removing duplicates så that we end up with 16 variables instead of 17
 ```{r}
 clean_covid <-
-  clean_covid[!duplicated(as.list(covid_data))]
+  covid_data[!duplicated(as.list(covid_data))]
+clean_covid
 ```
 
+Now I want to rename the column that has a space instead of _
+
+```{r}
+clean_covid<-
+  clean_covid %>% 
+  rename(pan_day="pan day")
+clean_covid
+```
+Now I want to change the columns age_gender because they are redundant. Separating age and gender
+
+```{r}
+clean_covid <-
+  clean_covid %>% 
+  pivot_longer(names_to = "gender", values_to = "age", cols=15:16)  
+clean_covid
+```
+Now I remove the NA´s and rename the gender variables as F and M. Because the NA´s in the respective columns are just the opposite gender
+```{r}
+clean_covid <-
+  clean_covid %>% 
+  drop_na(age) %>% 
+  mutate(Gender = if_else(gender == "age_female", "F", "M"))
+clean_covid
+ 
+```
+Now the dataset is tidy and I can explore it
+
+i install the packages needed for exploring
+
+```{r}
+install.packages(c("finalfit", "skimr", "naniar"))
+library(finalfit)
+```
+
+Using glimpse
+```{r}
+finalfit::ff_glimpse(clean_covid)
+```
+Missing variables
+In ct_results, the missing values are 209 (numerical variable type)
+In payor_group, the missing values are 7087 (categorical variable type)
+In patient_class, the missing values are 7077 (categorical variable type)
+
+Checking for outliers in summary statistics
+
+```{r}
+summary(clean_covid)
+```
+
+The following categories indicated singificant outliers:
+
+Age
+rec_ver_tat
+col_rec_tat
+
+
+I want to show the distribution of age
+```{r}
+  clean_covid %>% 
+  ggplot(aes(y=age))+
+  geom_boxplot()
+```
+And the same for col_rec_tat and adding log for a nicer overview
+```{r}
+  clean_covid %>% 
+  ggplot(aes(y=log(col_rec_tat)))+
+  geom_boxplot()
+```
+And the same for rec_ver_tat
+
+It doesnt look like significant outliers here by this box plot
+removing log and then the top value looks like an outlier. negative values doesnt allow for log
+
+```{r}
+  clean_covid %>% 
+  ggplot(aes(y=(rec_ver_tat)))+
+  geom_boxplot()
+```
+
+Now we want to check if the time spent waiting for the test result improve during the 100 days
+
+```{r}
+clean_covid %>% 
+  ggplot(aes(pan_day,rec_ver_tat))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  ggpubr::stat_cor()
+```
+
+Regression analysis and scatter plot didnt reveal any significant improvement in waiting time during the 100 days. p=0.12
+
+Checking if the chances of getting a positive test increase with the muber of tests taken
+number of entries for each patient ID:
+```{r}
+clean_covid %>% 
+  group_by(PatientID) %>% 
+  tally()
+```
 

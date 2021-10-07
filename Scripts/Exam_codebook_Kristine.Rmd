@@ -1,0 +1,38 @@
+---
+title: "Codebook_exam_Kristine"
+author: Kristine
+date: 07.10.2021
+output: html_document
+---
+Before starting I need to load the packages "tidyverse" and "here" to be able to use the here() function before tidying the data
+```{r}
+library(tidyverse)
+library(here)
+here()
+```
+
+Now i import the dataset into environment as well as assigning it to "Covid_data" to be able to view it and work with it in the Rmarkdown file.
+```{r}
+covid_data <- read_delim(here("Data", "exam_data.txt"))
+covid_data
+```
+Now we should tidy the data
+
+Here I try to separate the first column into two subcaterogies based on the separation sign "_"
+```{r}
+covid_data <-
+  covid_data %>% 
+  separate(col = subject,
+           into = c ("PatientID", "Patient_Name"),
+           extra = "merge",
+           sep = "-")
+covid_data
+```
+Now I try and clean the data more and rename it to track the changes in the environment for a nice overview
+removing duplicates
+```{r}
+clean_covid <-
+  clean_covid[!duplicated(as.list(covid_data))]
+```
+
+

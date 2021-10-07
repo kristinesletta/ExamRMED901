@@ -75,14 +75,14 @@ mostdelayedflights
 3. What does this code do?
 
 ```{r q2}
-flights %>% #this command selects the dataset "flights", and then
+flights %>% #this command selects the dataset "flights" and " %>% " takes the output of the function and makes sure it passes along to the next function. IN this way, the codes are linked together. 
 	filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
-  #this command excludes the flights with missing (non available) values from dep_Delay and arr_delay, and then
+  #this command excludes the flights with missing (non available) values from the variables dep_Delay and arr_delay, and then
   group_by(year, month, day) %>% 
   #groups the remaining data by year, month and day, and then
-  summarise( #creates a new data frame
-    avg_delay1 = mean(arr_delay), #calculating the average of arr_delay and assigning the values to the variable avg_delay1
-    avg_delay2 = mean(arr_delay[arr_delay > 0]) #calculating the average of all flights that were actually delayed and assigning it to the variable avg_delay2
+  summarise( #creates a new data frame with the grouped data
+    avg_delay1 = mean(arr_delay), #calculates the average of the variables arr_delay and assigning the values to the new variable avg_delay1
+    avg_delay2 = mean(arr_delay[arr_delay > 0]) #calculates the average of all flights that were actually delayed and assigning it to the variable avg_delay2
     
   )
 ```
@@ -97,7 +97,7 @@ Fill in the blanks in the code below:
 data("mpg")
 
 ggplot(mpg, aes(class)) + geom_bar()
-#could not create a histogram because the variables on teh x axis are not continous
+#could not create a histogram because the variables on the x axis are not continous, they are separate objects.
 ```
 
 
@@ -118,10 +118,10 @@ ggplot(mpg, aes(class)) +
 For each of these chart types, provide one example of data that you could
 visualize with it.
 
-For line chart: geom_line - evolution 
-For box plot: geom_boxplot - distribution of numeric variables 
-For histogram_ geom_histogram - can be used to represent 
-For area chart: geom_area - jjkfsdk
+For line chart: geom_line - A line chart represents a seriers of data points as a continous line. Line charts are often used when different values are developed over time. E.g yearly cancer incidences from 1980-2020.
+For box plot: geom_boxplot - Shows a five-number-summary of a set of data displayed in a box. It showes the distribution of the data as well as outliers and their values. it can be useful when comparing distribution between different datasets.  
+For histogram_ geom_histogram - can be used to measure the distribution of discrete or continuous data. It shows the number of data points that fall withing a specific range, called "bins". You could represent serum cholesterol and its frequency on the y axis using a histogram. 
+For area chart: geom_area - Typically, an area chart combines the representations of a bar chart and line chart, where the area under the line is filled. it showsthe numeric values of one or more groups over the progression of a second variable, often time. 
 ## ANALYSIS
 
 1. Modify below code to run linear regression analysis for outcome flipper length with using predictors sex and body mass by using variables from palmerpenguins::penguins dataset

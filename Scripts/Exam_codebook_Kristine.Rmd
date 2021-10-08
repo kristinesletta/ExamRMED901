@@ -126,11 +126,79 @@ clean_covid %>%
 
 Regression analysis and scatter plot didnt reveal any significant improvement in waiting time during the 100 days. p=0.12
 
-Checking if the chances of getting a positive test increase with the muber of tests taken
+Checking if the chances of getting a positive test increase with the muber of tests taken.
+This was difficult because there are several ways of interpreting the question. As well as finding out the answer. If the chances are related to each patient individually according to how many tests they have taken, OR if the chances are increased by the number of tests taken each day for example. It might be a given that the number of positive tests increase with the number of tests taken.
+
 number of entries for each patient ID:
 ```{r}
+covid_tests<-
 clean_covid %>% 
   group_by(PatientID) %>% 
   tally()
+covid_tests
 ```
+checking the portion of negative versus positive tests in the different categories of number of tests taken (n).
+
+```{r}
+clean_covid %>% 
+  group_by(PatientID,result) %>% 
+  tally() %>% 
+  ggplot(aes(n))+
+  geom_bar(aes(fill=result))
+```
+
+Performing linear regression and use broom to get a nice overview
+if the number of positive tests are correlated with the number of tests taken
+```{r}
+clean_covid %>% 
+  group_by(PatientID,result) %>% 
+  tally() %>% 
+  lm(result=="positive"~n, data = .) %>% 
+  broom::tidy()
+
+```
+The number of tests corresponds to the number of counts on each sex
+there are more tests in the female group
+
+```{r}
+clean_covid %>% 
+  count(gender)
+```
+
+Are there more positive tests in the drive through?
+Yes, there are more positive tests in the drive through:
+
+```{r}
+clean_covid %>% 
+  filter(result=="positive") %>% 
+  count(drive_thru_ind)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

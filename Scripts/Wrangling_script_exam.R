@@ -26,3 +26,23 @@ we created a duplicate number because of the "NA"
 then added another filter funciton to remove the NA´s in the age column
 
 4. we tried different geom_plots to vizualize and analyse the waiting time over the 100 days. 
+
+5. tried many different codes to determine the correlation between number of positive tests against the number of tests taken
+example: 
+  
+  ```{r}
+covid_tests %>% 
+  group_by(PatientID,result) %>% 
+  tally() %>% 
+  ggplot(aes(n))+
+  geom_col(aes(y=result))
+```
+
+vizually this was difficult. we tried thinking of different statistical analyses that could be used.
+correlation tests, two-way tests...
+
+6. checking if the number of tests corresponds to the bumber of counts on each sex
+```{r}
+covid_tests %>% 
+  count(gender)
+```

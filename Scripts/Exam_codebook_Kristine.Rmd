@@ -174,15 +174,47 @@ clean_covid %>%
   count(drive_thru_ind)
 ```
 
+Is the age of the individual correlated with the test being negative or positive?
+distribution of age in a histogram wiht positive and negative test results fills in the bars.
+```{r}
+clean_covid %>% 
+  ggplot(aes(age))+
+  geom_histogram(aes(fill=result))
+```
+
+Getting a better overview of the test results withing the certain age groups
+```{r}
+clean_covid %>% 
+  ggplot(aes(x=age))+
+  geom_histogram()+
+  facet_grid(~result)
+```
+Vizualizing it differently with geom line
+
+```{r}
+clean_covid %>% 
+  ggplot(aes(sample=age))+
+  geom_qq(aes())+
+  geom_qq_line()+
+  facet_grid(~result)
+  
+```
 
 
+Applying a kruskal-wallis test to compare means of the age of the result of non parametric variables
+```{r}
+clean_covid %>% 
+  kruskal.test(age~result, data = .) %>% 
+  broom::tidy()
+```
+Applying wilcox test with continuity correction for non-parametric statistical hypothesis to compare the average age.
 
-
-
-
-
-
-
+```{r}
+clean_covid %>% 
+  filter(result %in% c("positive", "negative")) %>% 
+  wilcox.test(age~result, data=.) %>% 
+  broom::tidy()
+```
 
 
 
